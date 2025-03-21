@@ -24,15 +24,19 @@ class _SpiedViewState extends State<SpiedView> {
   Future<void> _initialize() async {
     await _controller.initDatabase();
     final spied = await _controller.getSpied();
-  
+
     setState(() {
       _spied = spied;
     });
+
+    if (_spied != null) {
+      await _controller.startLocationUpdates(_spied!);
+    }
   }
 
-  Future<void> _buscarUsuario() async {
+  Future<void> _searchUser() async {
     final code = _textController.text.trim();
-  
+
     if (code.isNotEmpty) {
       try {
         await _controller.fetchSpied(code);
@@ -40,10 +44,14 @@ class _SpiedViewState extends State<SpiedView> {
         setState(() {
           _spied = monitorado;
         });
+
+        if (_spied != null) {
+          await _controller.startLocationUpdates(_spied!);
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Erro: $e')));
       }
     }
   }
@@ -58,49 +66,48 @@ class _SpiedViewState extends State<SpiedView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Monitoramento'),
-      ),
+      appBar: AppBar(title: const Text('Monitoramento')),
       body: Center(
-        child: _spied == null
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Insira código do monitorado:'),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      controller: _textController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Código',
+        child:
+            _spied == null
+                ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Insira código do monitorado:'),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextField(
+                        controller: _textController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Código',
+                        ),
                       ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: _buscarUsuario,
-                    child: const Text('Buscar'),
-                  ),
-                ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16.0),
-                    color: Colors.green[100],
-                    child: Text(
-                      'Monitoramento ativo: $_spied',
-                      style: const TextStyle(fontSize: 18),
+                    ElevatedButton(
+                      onPressed: _searchUser,
+                      child: const Text('Buscar'),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _desconectar,
-                    child: const Text('Desconectar'),
-                  ),
-                ],
-              ),
+                  ],
+                )
+                : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16.0),
+                      color: Colors.green[100],
+                      child: Text(
+                        'Monitoramento ativo: $_spied',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _desconectar,
+                      child: const Text('Desconectar'),
+                    ),
+                  ],
+                ),
       ),
     );
   }
