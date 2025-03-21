@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "45868455938",
+    "project_id": "gurk-spy",
+    "storage_bucket": "gurk-spy.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45868455938:android:08b7ba2237510cd2ca2f1b",
+        "android_client_info": {
+          "package_name": "com.chamed.gurkspy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1YdtC8UeZkFci51ilzzb6SYuvIBaJyKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45868455938:android:70d566e4a871430aca2f1b",
+        "android_client_info": {
+          "package_name": "com.example.gurk_spy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1YdtC8UeZkFci51ilzzb6SYuvIBaJyKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
