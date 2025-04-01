@@ -66,7 +66,10 @@ class _SpiedViewState extends State<SpiedView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Monitoramento')),
+      appBar: AppBar(
+        title: const Text('Monitoramento',style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color.fromARGB(255, 43, 42, 42),
+        ),
       body: Center(
         child:
             _spied == null

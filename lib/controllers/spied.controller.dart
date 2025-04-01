@@ -57,7 +57,7 @@ class SpiedController {
     }
 
     _locationTimer?.cancel();
-    _locationTimer = Timer.periodic(const Duration(minutes: 2), (timer) async {
+    _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) async {
       final position = await Geolocator.getCurrentPosition();
 
       await _database.child('locations/$spiedId').set({
