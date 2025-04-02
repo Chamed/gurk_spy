@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gurk_spy_user/views/register_view.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -65,7 +66,12 @@ class LoginView extends StatelessWidget {
               children: [
                 const Text('Não possui conta? '),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpView())
+                      );
+                  },
                   child: const Text(
                     'Registre-se',
                     style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
