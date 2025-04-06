@@ -13,7 +13,8 @@ class _SignUpViewState extends State<SignUpView> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _isLoading = false;
 
   Future<void> _registerUser() async {
@@ -26,7 +27,18 @@ class _SignUpViewState extends State<SignUpView> {
       );
       return;
     }
-
+    if (_nameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor, preencha todos os campos.'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
     setState(() {
       _isLoading = true;
     });
@@ -34,19 +46,19 @@ class _SignUpViewState extends State<SignUpView> {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
 
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user?.uid)
           .set({
-        'nome': _nameController.text.trim(),
-        'email': _emailController.text.trim(),
-        'uid': userCredential.user?.uid,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+            'nome': _nameController.text.trim(),
+            'email': _emailController.text.trim(),
+            'uid': userCredential.user?.uid,
+            'createdAt': FieldValue.serverTimestamp(),
+          });
 
       // Mostrar mensagem de sucesso
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,9 +74,7 @@ class _SignUpViewState extends State<SignUpView> {
       _passwordController.clear();
       _confirmPasswordController.clear();
 
-      
       Navigator.pop(context);
-
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       if (e.code == 'weak-password') {
@@ -78,10 +88,7 @@ class _SignUpViewState extends State<SignUpView> {
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -119,7 +126,7 @@ class _SignUpViewState extends State<SignUpView> {
             const Icon(
               Icons.person_add,
               size: 80,
-              color: Colors.black,
+              color: Color.fromARGB(255, 15, 55, 102),
             ),
             const SizedBox(height: 16.0),
             const Center(
@@ -135,22 +142,27 @@ class _SignUpViewState extends State<SignUpView> {
             const SizedBox(height: 12.0),
             _buildTextField(_passwordController, 'Senha', obscureText: true),
             const SizedBox(height: 12.0),
-            _buildTextField(_confirmPasswordController, 'Digite a senha novamente', obscureText: true),
+            _buildTextField(
+              _confirmPasswordController,
+              'Digite a senha novamente',
+              obscureText: true,
+            ),
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: _isLoading ? null : _registerUser,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: const Color.fromARGB(255, 15, 55, 102),
                 padding: const EdgeInsets.symmetric(vertical: 14.0),
               ),
-              child: _isLoading
-                  ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                  : const Text(
-                      'Cadastrar-se',
-                      style: TextStyle(color: Colors.white),
-                    ),
+              child:
+                  _isLoading
+                      ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                      : const Text(
+                        'Cadastrar-se',
+                        style: TextStyle(color: Colors.white),
+                      ),
             ),
           ],
         ),
@@ -158,14 +170,16 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, {bool obscureText = false}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label, {
+    bool obscureText = false,
+  }) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
         filled: true,
         fillColor: Colors.white,
       ),

@@ -39,85 +39,115 @@ class _LoginViewState extends State<LoginView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Icon(
-              Icons.lock,
-              size: 80,
-              color: Colors.black,
-            ),
-            const SizedBox(height: 16.0),
-            const Center(
-              child: Text(
-                'Bem vindo de volta!',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.white,
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Título GURK - SPY
+          const Center(
+            child: Text(
+              'GURK - SPY',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                letterSpacing: 1.5,
               ),
             ),
-            const SizedBox(height: 24.0),
-            _buildTextField(_emailController, 'E-mail'),
-            const SizedBox(height: 12.0),
-            _buildTextField(_passwordController, 'Senha', obscureText: true),
-            const SizedBox(height: 8.0),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Esqueceu a senha?',
-                  style: TextStyle(color: Colors.black54),
-                ),
+          ),
+          const SizedBox(height: 24.0),
+          
+          
+          Icon(
+            Icons.visibility_outlined , // Ícone de monitoramento cardíaco
+            size: 100,
+            color: const Color.fromARGB(255, 15, 55, 102),
+          ),
+          
+          const SizedBox(height: 24.0),
+          const Center(
+            child: Text(
+              'Bem-vindo de volta!',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black54,
               ),
             ),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _signIn,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(vertical: 14.0),
+          ),
+          const SizedBox(height: 24.0),
+          
+          _buildTextField(_emailController, 'E-mail'),
+          const SizedBox(height: 12.0),
+          _buildTextField(_passwordController, 'Senha', obscureText: true),
+          const SizedBox(height: 8.0),
+          
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () {},
+              child: const Text(
+                'Esqueceu a senha?',
+                style: TextStyle(color: Colors.black54),
               ),
-              child: _isLoading
-                  ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                  : const Text(
-                      'Entrar',
-                      style: TextStyle(color: Colors.white),
-                    ),
             ),
-            const SizedBox(height: 12.0),
-            const SizedBox(height: 12.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Não possui conta? '),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignUpView()),
-                    );
-                  },
-                  child: const Text(
-                    'Registre-se',
+          ),
+          
+          ElevatedButton(
+            onPressed: _isLoading ? null : _signIn,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 15, 55, 102),
+              padding: const EdgeInsets.symmetric(vertical: 14.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            child: _isLoading
+                ? const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  )
+                : const Text(
+                    'Entrar',
                     style: TextStyle(
-                      color: Colors.blue,
+                      color: Colors.white,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+          ),
+          
+          const SizedBox(height: 12.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Não possui conta? '),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignUpView()),
+                  );
+                },
+                child: const Text(
+                  'Registre-se',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildTextField(TextEditingController controller, String label,
       {bool obscureText = false}) {
