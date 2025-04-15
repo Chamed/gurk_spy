@@ -3,7 +3,7 @@ import 'package:gurk_spy_user/views/register_view.dart';
 import 'package:gurk_spy_user/controllers/login_controller.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -66,7 +66,7 @@ Widget build(BuildContext context) {
           Icon(
             Icons.visibility_outlined , // Ícone de monitoramento cardíaco
             size: 100,
-            color: const Color.fromARGB(255, 15, 55, 102),
+            color: const Color(0xFF673AB7),
           ),
           
           const SizedBox(height: 24.0),
@@ -101,7 +101,7 @@ Widget build(BuildContext context) {
           ElevatedButton(
             onPressed: _isLoading ? null : _signIn,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 15, 55, 102),
+              backgroundColor: Color(0xFF673AB7),
               padding: const EdgeInsets.symmetric(vertical: 14.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),

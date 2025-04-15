@@ -17,7 +17,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,9 @@ class MyApp extends StatelessWidget {
 
       initialRoute: '/login', 
       routes: {
-        '/login': (context) => const LoginView(),     // Tela de login
-        '/signup': (context) => const SignUpView(),   // Tela de cadastro
-        '/home': (context) => HomeView(),    
+        '/login': (context) => const LoginView(),     // TELA DE LOGIN
+        '/signup': (context) => const SignUpView(),   // TELA DE CADASTRO
+        '/home': (context) => HomeView(),    //TELA DE LISTAGEM DOS USUARIOS
       },
     );
   }

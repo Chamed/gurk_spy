@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gurk_spy_user/controllers/home_controller.dart';
+import 'package:gurk_spy_user/views/register_monitored_view.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -10,7 +11,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final HomeController _controller = HomeController();
-  final List<String> users = [];
+  List<Map<String, dynamic>> monitoredUsers = [];
   String userName = 'Usuário';
   bool _isLoading = true;
 
@@ -22,16 +23,15 @@ class _HomeViewState extends State<HomeView> {
 
   Future<void> _loadUserData() async {
     final userData = await _controller.getUserData();
-    if (userData != null && userData['nome'] != null) {
-      setState(() {
+    final usersData = await _controller.getMonitoredUsers();
+
+    setState(() {
+      if (userData != null && userData['nome'] != null) {
         userName = userData['nome'];
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+      }
+      monitoredUsers = usersData;
+      _isLoading = false;
+    });
   }
 
   @override
@@ -48,45 +48,113 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Olá, $userName',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: users.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'Nenhum usuário encontrado.',
-                            style: TextStyle(fontSize: 18),
+      body: Stack(
+        children: [
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Olá, $userName',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                        )
-                      : ListView.builder(
-                          itemCount: users.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(users[index]),
-                            );
-                          },
                         ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child:
+                        monitoredUsers.isEmpty
+                            ? const Center(
+                              child: Text(
+                                'Nenhum monitorado encontrado.',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            )
+                            : ListView.builder(
+                              itemCount: monitoredUsers.length,
+                              itemBuilder: (context, index) {
+                                final user = monitoredUsers[index];
+                                final bool isActive = user['status'] == 'ativo';
+
+                                return ListTile(
+                                  leading: Icon(
+                                    Icons.circle,
+                                    color: isActive ? Colors.green : Colors.red,
+                                    size: 16,
+                                  ),
+                                  title: Text(user['nome'] ?? 'Sem nome'),
+                                  subtitle: Text('Status: ${user['status']}'),
+                                );
+                              },
+                            ),
+                  ),
+                ],
+              ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20,
+            child: Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 500),
+                      pageBuilder:
+                          (_, __, ___) => const RegisterMonitoredView(),
+                      transitionsBuilder: (_, animation, __, child) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 0.5),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOutQuad,
+                            ),
+                          ),
+                          child: FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.person_add_alt_1, size: 24),
+                label: const Text(
+                  'Adicionar Monitorado',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
-              ],
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF673AB7),
+                  iconColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 5,
+                  shadowColor: Colors.blue[800]!.withOpacity(0.3),
+                ),
+              ),
             ),
+          ),
+        ],
+      ),
     );
   }
 }

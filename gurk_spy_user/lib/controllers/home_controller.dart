@@ -7,14 +7,13 @@ class HomeController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Método para fazer logout
   Future<void> signOut(BuildContext context) async {
     try {
       await _auth.signOut();
       Navigator.pushNamedAndRemoveUntil(
-        context, 
-        '/login', 
-        (Route<dynamic> route) => false
+        context,
+        '/login',
+        (Route<dynamic> route) => false,
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -26,14 +25,19 @@ class HomeController {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getMonitoredUsers() async {
+    final snapshot = await _firestore.collection('spied').get();
+    return snapshot.docs
+        .map((doc) => doc.data())
+        .toList();
+  }
+
   // Método para obter os dados do usuário
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = _auth.currentUser;
     if (user != null) {
-      DocumentSnapshot userDoc = await _firestore
-          .collection('users')
-          .doc(user.uid)
-          .get();
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(user.uid).get();
       return userDoc.data() as Map<String, dynamic>?;
     }
     return null;
