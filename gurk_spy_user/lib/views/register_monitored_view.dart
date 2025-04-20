@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gurk_spy_user/views/create_area.view.dart';
 import '../controllers/monitored_controller.dart';
 import '../models/monitored_model.dart';
 
@@ -6,7 +7,6 @@ class RegisterMonitoredView extends StatelessWidget {
   const RegisterMonitoredView({super.key});
 
   bool _codigoValido(String codigo) {
-    // Firebase não permite os seguintes caracteres em chaves: . # $ [ ] /
     final invalidCharacters = RegExp(r'[.#$\[\]/]');
     return !invalidCharacters.hasMatch(codigo);
   }
@@ -140,7 +140,13 @@ class RegisterMonitoredView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, 
+                      MaterialPageRoute(
+                        builder: (context) => const CreateAreaView(),
+                      ),
+                    );
+                  },
                   child: const Text(
                     'Criar área delimitadora',
                     style: TextStyle(color: Colors.white),
