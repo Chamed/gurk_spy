@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:gurk_spy_user/controllers/create_area_controller.dart';
 
 class CreateAreaView extends StatefulWidget {
@@ -79,12 +78,20 @@ class _CreateAreaViewState extends State<CreateAreaView> {
               },
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: ElevatedButton.icon(
               onPressed: () {
-                print('Área registrada: ${controller.tappedPoints}');
+                if (controller.pontosArea.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Selecione pelo menos um ponto no mapa.'),
+                    ),
+                  );
+                  return;
+                }
+                // Retorna os pontos para a tela anterior
+                Navigator.pop(context, controller.pontosArea);
               },
               icon: const Icon(Icons.check_circle_outline, color: Colors.white),
               label: const Text(
@@ -94,10 +101,7 @@ class _CreateAreaViewState extends State<CreateAreaView> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF673AB7),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                minimumSize: const Size(
-                  double.infinity,
-                  56,
-                ), // botão mais largo e alto
+                minimumSize: const Size(double.infinity, 56),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

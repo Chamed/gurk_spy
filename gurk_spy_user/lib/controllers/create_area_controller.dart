@@ -7,6 +7,10 @@ class CreateAreaController extends ChangeNotifier {
   Set<Circle> circles = {};
   Set<Polygon> polygons = {};
   LatLng mapPosition = const LatLng(-23.55052, -46.633308);
+  String areaType = '';
+
+  // Getter corrigido
+  List<LatLng> get pontosArea => tappedPoints;
 
   Future<void> searchLocation(String query) async {
     try {
@@ -26,6 +30,7 @@ class CreateAreaController extends ChangeNotifier {
     mapPosition = position;
 
     if (tappedPoints.length == 1) {
+      areaType = 'circle';
       circles = {
         Circle(
           circleId: const CircleId('area_circulo'),
@@ -38,6 +43,7 @@ class CreateAreaController extends ChangeNotifier {
       };
       polygons.clear();
     } else if (tappedPoints.length == 3) {
+      areaType = 'polygon';
       polygons = {
         Polygon(
           polygonId: const PolygonId('triangulo'),

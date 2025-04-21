@@ -26,11 +26,17 @@ class HomeController {
   }
 
   Future<List<Map<String, dynamic>>> getMonitoredUsers() async {
-    final snapshot = await _firestore.collection('spied').get();
-    return snapshot.docs
-        .map((doc) => doc.data())
-        .toList();
-  }
+  User? user = _auth.currentUser;
+  if (user == null) return [];
+
+  final snapshot = await _firestore
+      .collection('spied')
+      .where('createdBy', isEqualTo: user.uid)
+      .get();
+
+  return snapshot.docs.map((doc) => doc.data()).toList();
+}
+
 
   // Método para obter os dados do usuário
   Future<Map<String, dynamic>?> getUserData() async {
