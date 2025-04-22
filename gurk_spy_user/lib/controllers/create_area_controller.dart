@@ -4,13 +4,14 @@ import 'package:geocoding/geocoding.dart';
 
 class CreateAreaController extends ChangeNotifier {
   List<LatLng> tappedPoints = [];
+  List<LatLng> areaPoints = []; // <- Adicione esta lista
   Set<Circle> circles = {};
   Set<Polygon> polygons = {};
   LatLng mapPosition = const LatLng(-23.55052, -46.633308);
   String areaType = '';
 
-  // Getter corrigido
-  List<LatLng> get pontosArea => tappedPoints;
+  // Getter atualizado para retornar os pontos da área criada
+  List<LatLng> get pontosArea => areaPoints;
 
   Future<void> searchLocation(String query) async {
     try {
@@ -42,21 +43,25 @@ class CreateAreaController extends ChangeNotifier {
         )
       };
       polygons.clear();
+      areaPoints = [position]; // <- salva o ponto do círculo
     } else if (tappedPoints.length == 3) {
       areaType = 'polygon';
+      final trianglePoints = tappedPoints.sublist(0, 3);
       polygons = {
         Polygon(
           polygonId: const PolygonId('triangulo'),
-          points: tappedPoints.sublist(0, 3),
+          points: trianglePoints,
           fillColor: const Color.fromARGB(255, 0, 255, 64).withOpacity(0.4),
           strokeColor: Colors.red,
           strokeWidth: 2,
         )
       };
       circles.clear();
-      tappedPoints.clear();
+      areaPoints = trianglePoints; // <- salva os 3 pontos
+      tappedPoints.clear(); // pode limpar os cliques temporários
     }
 
     notifyListeners();
   }
 }
+
