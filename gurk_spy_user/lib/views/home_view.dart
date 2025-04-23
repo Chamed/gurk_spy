@@ -88,11 +88,15 @@ class _HomeViewState extends State<HomeView> {
                                 return ListTile(
                                   leading: Icon(
                                     Icons.circle,
-                                    color: isActive ? Colors.green : Colors.red,
+                                    color:
+                                        Colors
+                                            .green, // DEIXEI ESSA FUNCIONALIDADE PARA DEPOIS isActive ? Colors.green : Colors.red,
                                     size: 16,
                                   ),
                                   title: Text(user['nome'] ?? 'Sem nome'),
-                                  subtitle: Text('Status: ${user['status']}'),
+                                  subtitle: Text(
+                                    'Status: Ativo',
+                                  ), //${user['status']}
                                 );
                               },
                             ),
@@ -105,8 +109,8 @@ class _HomeViewState extends State<HomeView> {
             bottom: 20,
             child: Center(
               child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  final resultado = await Navigator.push(
                     context,
                     PageRouteBuilder(
                       transitionDuration: const Duration(milliseconds: 500),
@@ -131,14 +135,19 @@ class _HomeViewState extends State<HomeView> {
                       },
                     ),
                   );
+
+                  if (resultado == true) {
+                    _loadUserData();
+                  }
                 },
+
                 icon: const Icon(Icons.person_add_alt_1, size: 24),
                 label: const Text(
                   'Adicionar Monitorado',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF673AB7),
+                  backgroundColor: Color.fromARGB(255, 15, 55, 102),
                   iconColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,

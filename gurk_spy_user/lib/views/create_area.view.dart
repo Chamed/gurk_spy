@@ -99,7 +99,7 @@ class _CreateAreaViewState extends State<CreateAreaView> {
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF673AB7),
+                backgroundColor: const Color.fromARGB(255, 15, 55, 102),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 minimumSize: const Size(double.infinity, 56),
                 shape: RoundedRectangleBorder(
