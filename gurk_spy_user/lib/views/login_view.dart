@@ -64,9 +64,9 @@ Widget build(BuildContext context) {
           
           
           Icon(
-            Icons.visibility_outlined , // Ícone de monitoramento cardíaco
+            Icons.visibility_outlined ,
             size: 100,
-            color: const Color(0xFF673AB7),
+            color: Color.fromARGB(255, 15, 55, 102),
           ),
           
           const SizedBox(height: 24.0),
@@ -101,7 +101,7 @@ Widget build(BuildContext context) {
           ElevatedButton(
             onPressed: _isLoading ? null : _signIn,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF673AB7),
+              backgroundColor: Color.fromARGB(255, 15, 55, 102),
               padding: const EdgeInsets.symmetric(vertical: 14.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),

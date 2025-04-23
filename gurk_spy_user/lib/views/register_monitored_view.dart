@@ -51,7 +51,7 @@ class _RegisterMonitoredViewState extends State<RegisterMonitoredView> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Icon(Icons.person_add, size: 80),
+              const Icon(Icons.person_add, size: 80, color: Color.fromARGB(255, 15, 55, 102)),
               const SizedBox(height: 30),
               _buildTextField(nomeController, 'Nome completo'),
               const SizedBox(height: 16),
@@ -103,7 +103,7 @@ class _RegisterMonitoredViewState extends State<RegisterMonitoredView> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF673AB7),
+                    backgroundColor: const Color.fromARGB(255, 15, 55, 102),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -149,7 +149,7 @@ class _RegisterMonitoredViewState extends State<RegisterMonitoredView> {
                           content: Text('Paciente cadastrado com sucesso!'),
                         ),
                       );
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Erro ao cadastrar: $e')),
